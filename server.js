@@ -19,8 +19,8 @@ mongoose.Promise = global.Promise;
 const Channels = [];
 
 const getChannel = (channelId) => {
-    return Channels.find( id => {
-        return channelId == id;
+    return Channels.find( channel => {
+        return channelId === channel.id;
     });
 };
 
@@ -40,7 +40,7 @@ app.post('/channels', (req, res) => {
 });
 
 app.get('/channels/:id', (req, res) => {
-    const channel = getChannel(req.body.id);
+    const channel = getChannel(req.params.id);
     
     var messages = channel.messages.map((message) => {
         return message;
@@ -51,9 +51,7 @@ app.get('/channels/:id', (req, res) => {
 
 
 app.post('/channels/:id', (req, res) => {
-    const channel = Channels.find(channel => {
-        return channel.id === req.params.id;
-    });
+    const channel = getChannel(req.params.id);
 
     channel.addMessage(req.body.user, req.body.message);
     res.json(channel.messages);
