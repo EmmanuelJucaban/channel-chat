@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const User = require('./models/user');
 const Channel = require('./models/channel');
 const bodyParser = require('body-parser');
@@ -14,8 +13,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json())
 
 
-mongoose.Promise = global.Promise;
-
 const Channels = [];
 
 const getChannel = (channelId) => {
@@ -23,10 +20,6 @@ const getChannel = (channelId) => {
         return channelId === channel.id;
     });
 };
-
-if(process.env.NODE_ENV !== 'test') {
-    mongoose.connect('mongodb://localhost/channel');
-}
 
 app.get('/channels', (req, res) => {
     res.json(Channels);
